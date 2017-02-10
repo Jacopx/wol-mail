@@ -1,3 +1,4 @@
+# Importing all Dependencies
 import poplib
 from email import parser
 import datetime
@@ -11,6 +12,7 @@ def main(f, MAC, user, pwd):
 
     # Infinite cycle
     while 1:
+        # Saving time
         isnow = datetime.datetime.now()
         # Gmail POP3 Server
         pop_link = poplib.POP3_SSL('pop.gmail.com')
@@ -33,12 +35,18 @@ def main(f, MAC, user, pwd):
 
         # Printing log and cheching MSG syntax
         for msg in msg:
-            if msg['subject']=='WOL':
+            
+            if msg['subject']=='WOL': # Correct Message receiver
+
                 f.write('WOL --> OK @ {0}:{1} from {2}\n'.format(isnow.hour, isnow.minute, msg['from']))
+                # Sending MP to MAC, Broadcast IP and Port 9
                 wol.send_magic_packet(MAC, ip_address='255.255.255.255', port=9)
-            else:
+
+            else: # Wrong message receiver
+
                 f.write('WOL --> KO @ {0}:{1} from {2}\n'.format(isnow.hour, isnow.minute, msg['from']))
 
+        # Closing POP connection
         pop_link.quit()
 
 # Managing signal KeyboardInterrupt
