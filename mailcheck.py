@@ -46,19 +46,19 @@ if __name__ == '__main__':
 
     # Variables
     MAC = 'AA:BB:CC:DD:EE:FF'
-    user = 'jacopx.freenas'
-    pwd = 'popolo99'
+    user = 'username'
+    pwd = 'password'
 
     # Opening file with date of the day
     isnow = datetime.datetime.now()
     fname='WOL_' + str(isnow.month) + str(isnow.day) + '-' + str(isnow.hour) + str(isnow.minute) + '.log'
     f = open(fname, 'w', 0)
 
+    # Main call and KeyboardInterrupt handler
     try:
         main(f, MAC, user, pwd)
     except KeyboardInterrupt:
         f.write('\n\n----------------------------------------------\n')
         f.write('Start: ' + str(datetime.datetime.now()))
-
     finally:
         f.close()
