@@ -35,16 +35,16 @@ def main(f, MAC, user, pwd):
 
         # Printing log and cheching MSG syntax
         for msg in msg:
-            
+
             if msg['subject']=='WOL': # Correct Message receiver
 
-                f.write('WOL --> OK @ {0}:{1} from {2}\n'.format(isnow.hour, isnow.minute, msg['from']))
+                f.write('WOL --> YES @ {0}:{1} from {2}\n'.format(isnow.hour, isnow.minute, msg['from']))
                 # Sending MP to MAC, Broadcast IP and Port 9
                 wol.send_magic_packet(MAC, ip_address='255.255.255.255', port=9)
 
             else: # Wrong message receiver
 
-                f.write('WOL --> KO @ {0}:{1} from {2}\n'.format(isnow.hour, isnow.minute, msg['from']))
+                f.write('WOL --> NOT @ {0}:{1} from {2}\n'.format(isnow.hour, isnow.minute, msg['from']))
 
         # Closing POP connection
         pop_link.quit()
@@ -54,8 +54,8 @@ if __name__ == '__main__':
 
     # Variables
     MAC = 'AA:BB:CC:DD:EE:FF'
-    user = 'username'
-    pwd = 'password'
+    user = 'example.example'
+    pwd = 'prova1234'
 
     # Opening file with date of the day
     isnow = datetime.datetime.now()
@@ -66,7 +66,7 @@ if __name__ == '__main__':
     try:
         main(f, MAC, user, pwd)
     except KeyboardInterrupt:
-        f.write('\n\n----------------------------------------------\n')
-        f.write('Start: ' + str(datetime.datetime.now()))
+        f.write('\n----------------------------------------------\n')
+        f.write('Stop: ' + str(datetime.datetime.now()))
     finally:
         f.close()
