@@ -47,7 +47,7 @@ the script will check every 2s the presence of a new mail, then it will compare 
 * [datetime] - Date time Library
 * [time] - Time library
 * [email] - To Parse the the mail
-* [wakeonlan] - [https://pypi.python.org/pypi/wakeonlan/0.2.2] For sending MagicPacket
+* [wakeonlan] - For sending MagicPacket (https://pypi.python.org/pypi/wakeonlan/0.2.2)
 
 
 ## Built With
