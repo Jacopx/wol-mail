@@ -17,7 +17,7 @@ wakeonlan
 
 ### Preparing script
 
-There are 3 main variables necessary for the correct working of the software, MAC (of the devices to be waked), username and password of the mail account. 
+There are 3 main variables necessary for the correct working of the software, MAC (of the devices to be waked), username and password of the mail account.
 ```
 MAC = 'AA:BB:CC:DD:EE:FF' ---> MAC = 'your MAC address'
 user = 'example' ---> user = 'your mail address'
@@ -40,6 +40,7 @@ The software is studied to be runned in background like this:
 setsid python mailcheck.py
 ```
 the script will check every 2s the presence of a new mail, then it will compare the received mail with the fields that you want, in this case with the SUBJECT of the mail that it must to be equal to 'WOL' if it will be then scrit will send the MagicPacket to the specified MAC.
+This software is build for managing the Keyboard Interrupt signal for the correct shutdown of the script.
 
 ## Dependencies
 
