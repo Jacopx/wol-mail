@@ -11,7 +11,7 @@ user = 'jacopo.nasi'
 pwd = '123456abcde'
 
 def close(f, l):
-
+    # Correct closing of everything
     f.write('{0}'.format(l))
     f.write('\nStop: ' + time.strftime("%d-%m-%y @ %H:%M.%S"))
     f.close()
@@ -20,10 +20,9 @@ def login(f, l, user, pwd):
     # Gmail POP3 Server
     try:
         pop_link = poplib.POP3_SSL('pop.gmail.com')
-        pop_link.set_debuglevel(2)
     except:
         l.add_row(["ERR", "POP3", time.strftime("%H:%M.%S"), "---"])
-        time.sleep(3)
+        time.sleep(45)
         main(l, MAC, user, pwd)
 
     try:
@@ -42,7 +41,7 @@ def login(f, l, user, pwd):
 
 def main(l, MAC, user, pwd):
 
-    t=10
+    t = 20
     # Infinite cycle
     while 1:
         # Call login function
