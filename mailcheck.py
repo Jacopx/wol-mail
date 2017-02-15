@@ -3,6 +3,7 @@ import poplib
 from email import parser
 import time
 from wakeonlan import wol
+from prettytable import PrettyTable
 
 def login(f, user, pwd):
     # Gmail POP3 Server
@@ -21,10 +22,9 @@ def login(f, user, pwd):
 
     return pop_link
 
-def main(f, MAC, user, pwd):
+def main(f, l, MAC, user, pwd):
     # Writing starting time and divisor
     f.write('Start: ' + time.strftime("%d-%m-%y @ %H:%M.%S") + '\n')
-    f.write('----------------------------------------------\n')
 
     t=10
     # Infinite cycle
@@ -40,11 +40,11 @@ def main(f, MAC, user, pwd):
         # Printing log and cheching MSG syntax
         for msg in msg:
             if msg['subject']=='WOL': # Correct Message receiver
-                f.write('WOL --> YES @ {0} from {1}\n'.format(time.strftime("%H:%M.%S"), msg['from']))
+                l.add_row(["WOL", "YES", time.strftime("%H:%M.%S"), msg['from']])
                 # Sending MP to MAC, Broadcast IP and Port 9
                 wol.send_magic_packet(MAC, ip_address='255.255.255.255', port=9)
             else: # Wrong message receiver
-                f.write('WOL --> NO @ {0} from {1}\n'.format(time.strftime("%H:%M.%S"), msg['from']))
+                l.add_row(["WOL", "NO", time.strftime("%H:%M.%S"), msg['from']])
 
         # Close the active connection
         pop_link.quit()
@@ -59,15 +59,18 @@ if __name__ == '__main__':
     user = 'jacopo.nasi'
     pwd = '123456prova'
 
+    # Opening table
+    l = PrettyTable(["Type", "Correct", "Time", "From"])
+
     # Opening file with date of the day
     fname='WOL_' + time.strftime("%y%m%d-%H%M") + '.log'
     f = open(fname, 'w', 0)
 
     # Main call and KeyboardInterrupt handler
     try:
-        main(f, MAC, user, pwd)
+        main(f, l, MAC, user, pwd)
     except KeyboardInterrupt:
-        f.write('----------------------------------------------\n')
-        f.write('Stop: ' + time.strftime("%d-%m-%y @ %H:%M.%S"))
+        f.write('{0}'.format(l))
+        f.write('\nStop: ' + time.strftime("%d-%m-%y @ %H:%M.%S"))
     finally:
         f.close()
