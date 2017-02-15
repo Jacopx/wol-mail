@@ -12,7 +12,7 @@ brew install python
 ```
 You'll also need this package:
 ```
-wakeonlan
+wakeonlan prettytable
 ```
 
 ### Preparing script
@@ -42,13 +42,20 @@ setsid python mailcheck.py
 the script will check every 2s the presence of a new mail, then it will compare the received mail with the fields that you want, in this case with the SUBJECT of the mail that it must to be equal to 'WOL' if it will be then scrit will send the MagicPacket to the specified MAC.
 This software is build for managing the Keyboard Interrupt signal for the correct shutdown of the script.
 
+The script can manage multiple situations:
+* Internet Fail - In case of this it will restart the procedure after a waiting time like 30s
+* Wrong user - This will cause the close of the script with a proper record in the log
+* Wrong pwd - This will cause the close of the script with a proper record in the log
+
 ## Dependencies
 
 * [poplib] - For POPSSL framework
 * [datetime] - Date time Library
 * [time] - Time library
 * [email] - To Parse the the mail
-* [wakeonlan] - For sending MagicPacket (https://pypi.python.org/pypi/wakeonlan/0.2.2)
+* [wakeonlan] - For sending MagicPacket
+* [PrettyTable] - For the .log file
+(https://pypi.python.org/pypi/wakeonlan/0.2.2)
 
 
 ## Built With
