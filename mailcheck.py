@@ -5,32 +5,49 @@ import time
 from wakeonlan import wol
 from prettytable import PrettyTable
 
-def login(f, user, pwd):
-    # Gmail POP3 Server
-    pop_link = poplib.POP3_SSL('pop.gmail.com')
+# Variables
+MAC = 'AA:BB:CC:DD:EE:FF'
+user = 'jacopo.nasi'
+pwd = '123456abcde'
 
-    # Try login
+def close(f, l):
+
+    f.write('{0}'.format(l))
+    f.write('\nStop: ' + time.strftime("%d-%m-%y @ %H:%M.%S"))
+    f.close()
+
+def login(f, l, user, pwd):
+    # Gmail POP3 Server
+    try:
+        pop_link = poplib.POP3_SSL('pop.gmail.com')
+        pop_link.set_debuglevel(2)
+    except:
+        l.add_row(["ERR", "POP3", time.strftime("%H:%M.%S"), "---"])
+        time.sleep(3)
+        main(l, MAC, user, pwd)
+
     try:
         pop_link.user(user)
-    except poplib.socket.error, poplib.error_proto:
-        f.write('LOGIN ERROR @ ' + time.strftime("%d-%m-%y %H:%M.%S") + '\n')
-    # Try password
+    except:
+        l.add_row(["ERR", "USER", time.strftime("%H:%M.%S"), "---"])
+        raise SystemExit(close(f, l))
+
     try:
         pop_link.pass_(pwd)
-    except poplib.socket.error, poplib.error_proto:
-        f.write('LOGIN ERROR @ ' + time.strftime("%d-%m-%y %H:%M.%S") + '\n')
+    except:
+        l.add_row(["ERR", "PWD", time.strftime("%H:%M.%S"), "---"])
+        raise SystemExit(close(f, l))
 
     return pop_link
 
-def main(f, l, MAC, user, pwd):
-    # Writing starting time and divisor
-    f.write('Start: ' + time.strftime("%d-%m-%y @ %H:%M.%S") + '\n')
+def main(l, MAC, user, pwd):
 
     t=10
     # Infinite cycle
     while 1:
         # Call login function
-        pop_link=login(f, user, pwd)
+        pop_link = login(f, l, user, pwd)
+
         # Get messages from server:
         msg = [pop_link.retr(i) for i in range(1, len(pop_link.list()[1]) + 1)]
         # Concat message pieces:
@@ -54,23 +71,17 @@ def main(f, l, MAC, user, pwd):
 # Managing signal KeyboardInterrupt
 if __name__ == '__main__':
 
-    # Variables
-    MAC = 'AA:BB:CC:DD:EE:FF'
-    user = 'jacopo.nasi'
-    pwd = '123456prova'
-
     # Opening table
     l = PrettyTable(["Type", "Correct", "Time", "From"])
 
     # Opening file with date of the day
     fname='WOL_' + time.strftime("%y%m%d-%H%M") + '.log'
     f = open(fname, 'w', 0)
+    # Writing starting time and divisor
+    f.write('Start: ' + time.strftime("%d-%m-%y @ %H:%M.%S") + '\n')
 
     # Main call and KeyboardInterrupt handler
     try:
-        main(f, l, MAC, user, pwd)
+        main(l, MAC, user, pwd)
     except KeyboardInterrupt:
-        f.write('{0}'.format(l))
-        f.write('\nStop: ' + time.strftime("%d-%m-%y @ %H:%M.%S"))
-    finally:
-        f.close()
+        close(f, l)
