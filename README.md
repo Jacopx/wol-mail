@@ -12,7 +12,7 @@ brew install python
 ```
 You'll also need this package:
 ```
-wakeonlan prettytable
+pip install wakeonlan prettytable
 ```
 
 ### Preparing script
