@@ -2,6 +2,7 @@
 
 Python script for waking up devices with a mail with some defined condition.
 This version is now working with a log file only. The idea is to run it on a RaspberryPy in background with setsid command.
+I have set up a timer that increase/decrease the interval of checks looking at the hours of the day.
 
 ### Prerequisites
 
@@ -26,7 +27,7 @@ user = 'example' ---> user = 'your mail address'
 
 ## Running the tests
 
-To run the system run simply:
+To run the system use:
 ```
 python mailcheck.py
 ```
