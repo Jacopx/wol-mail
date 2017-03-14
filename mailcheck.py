@@ -41,7 +41,6 @@ def login(f, l, user, pwd):
 
 def main(l, MAC, user, pwd):
 
-    t = 20
     # Infinite cycle
     while 1:
         # Call login function
@@ -65,6 +64,15 @@ def main(l, MAC, user, pwd):
         # Close the active connection
         pop_link.quit()
         # Waiting t time before recheck
+        isnow = datetime.datetime.now()
+        if(isnow.hour > 23 or isnow.hour < 7):
+            t = 300 # Waiting 5 minutes during night hours
+        elif (isnow.hour => 11 and isnow.hour <= 14):
+            t = 30 # 30s during lunch time
+        elif (isnow.hour => 18 and isnow.hour <= 23):
+            t = 30 # 30s during dinner time
+        else:
+            t = 120 # The rest of the day will wait 2 minutes
         time.sleep(t)
 
 # Managing signal KeyboardInterrupt
