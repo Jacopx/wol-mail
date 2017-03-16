@@ -1,7 +1,7 @@
 # Importing all Dependencies
 import poplib
 from email import parser
-import time
+import time, datetime
 from wakeonlan import wol
 from prettytable import PrettyTable
 
@@ -67,9 +67,9 @@ def main(l, MAC, user, pwd):
         isnow = datetime.datetime.now()
         if(isnow.hour > 23 or isnow.hour < 7):
             t = 300 # Waiting 5 minutes during night hours
-        elif (isnow.hour => 11 and isnow.hour <= 14):
+        elif (isnow.hour >= 11 and isnow.hour <= 14):
             t = 30 # 30s during lunch time
-        elif (isnow.hour => 18 and isnow.hour <= 23):
+        elif (isnow.hour >= 18 and isnow.hour <= 23):
             t = 30 # 30s during dinner time
         else:
             t = 120 # The rest of the day will wait 2 minutes
